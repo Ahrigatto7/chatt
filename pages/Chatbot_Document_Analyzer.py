@@ -2,7 +2,7 @@ import streamlit as st
 from modules import file_handler, chatbot_ai
 
 st.set_page_config(page_title=" 문서 분석", layout="wide")
-st.title("📝  기반 문서 분석")
+st.title("📝  문서 분석")
 
 uploaded_file = st.file_uploader("분석할 문서 업로드 (.docx / .md / .txt)", type=["docx", "md", "txt"])
 
