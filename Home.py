@@ -11,6 +11,7 @@ if uploaded_file:
 
     # 1. 텍스트 추출
     text = file_handler.extract_text(uploaded_file)
+    st.session_state["uploaded_text"] = text
 
     # 2. 키워드 기반 혼인 문단 추출
     st.subheader("🔍 혼인 관련 키워드 분석")
