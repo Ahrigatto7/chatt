@@ -1,8 +1,8 @@
 import streamlit as st
 from modules import file_handler, keyword_analyzer, rule_extractor, storage, database
 
-st.set_page_config(page_title="전문가용 사주 분석기", layout="wide")
-st.title("📘 전문가용 사주 문서 자동 분석기")
+st.set_page_config(page_title="분석기", layout="wide")
+st.title("📘 자동 분석기")
 
 uploaded_file = st.file_uploader("📂 분석할 문서 업로드 (.docx / .md / .txt)", type=["docx", "md", "txt"])
 
@@ -11,6 +11,7 @@ if uploaded_file:
 
     # 1. 텍스트 추출
     text = file_handler.extract_text(uploaded_file)
+    st.session_state["uploaded_text"] = text
 
     # 2. 키워드 기반 혼인 문단 추출
     st.subheader("🔍 혼인 관련 키워드 분석")
