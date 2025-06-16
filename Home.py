@@ -1,8 +1,8 @@
 import streamlit as st
 from modules import file_handler, keyword_analyzer, rule_extractor, storage, database
 
-st.set_page_config(page_title="전문가용 사주 분석기", layout="wide")
-st.title("📘 전문가용 사주 문서 자동 분석기")
+st.set_page_config(page_title="분석기", layout="wide")
+st.title("📘 분석기")
 
 uploaded_file = st.file_uploader("📂 분석할 문서 업로드 (.docx / .md / .txt)", type=["docx", "md", "txt"])
 
