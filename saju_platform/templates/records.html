@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>저장된 사주</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container my-4">
+  <h1>저장된 사주 목록</h1>
+  <a href="{{ url_for('index') }}">입력 화면으로</a>
+  <ul class="list-group mt-3">
+  {% for item in records %}
+    <li class="list-group-item">
+      <strong>{{ item['input']['birthdate'] }} {{ item['input']['birthtime'] }}</strong>
+      - {{ item['input']['gender'] }}
+    </li>
+  {% else %}
+    <li class="list-group-item">저장된 데이터가 없습니다.</li>
+  {% endfor %}
+  </ul>
+</body>
+</html>

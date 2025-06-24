@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>만세력 분석기</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="container my-4">
+  <h1>만세력 입력</h1>
+  <form method="post" action="/analyze" class="mb-3">
+    <label class="form-label">생년월일:</label>
+    <input type="date" name="birthdate" class="form-control" required>
+    <label class="form-label mt-2">출생시간:</label>
+    <input type="time" name="birthtime" class="form-control" required>
+    <label class="form-label mt-2">성별:</label>
+    <select name="gender" class="form-select">
+      <option value="male">남성</option>
+      <option value="female">여성</option>
+    </select>
+    <button type="submit" class="btn btn-primary mt-3">분석</button>
+  </form>
+
+  {% if result %}
+  <h2>분석 결과</h2>
+  <ul class="nav nav-tabs" id="resultTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summary" type="button" role="tab">요약</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="health-tab" data-bs-toggle="tab" data-bs-target="#health" type="button" role="tab">건강</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="job-tab" data-bs-toggle="tab" data-bs-target="#job" type="button" role="tab">직업</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="match-tab" data-bs-toggle="tab" data-bs-target="#match" type="button" role="tab">궁합</button>
+    </li>
+  </ul>
+  <div class="tab-content p-3 border border-top-0" id="resultTabContent">
+    <div class="tab-pane fade show active" id="summary" role="tabpanel">
+      <p>{{ result['interpretation']['요약'] }}</p>
+    </div>
+    <div class="tab-pane fade" id="health" role="tabpanel">
+      <p>{{ result['interpretation']['건강'] }}</p>
+    </div>
+    <div class="tab-pane fade" id="job" role="tabpanel">
+      <p>{{ result['interpretation']['직업'] }}</p>
+    </div>
+    <div class="tab-pane fade" id="match" role="tabpanel">
+      <p>{{ result['interpretation']['혼인'] }}</p>
+    </div>
+  </div>
+
+  <canvas id="elementChart" width="400" height="200" class="mt-4"></canvas>
+  <script>
+    const ctx = document.getElementById('elementChart').getContext('2d');
+    const data = {
+      labels: {{ result['analysis']['elements'].keys()|list }},
+      datasets: [{
+        label: '오행 분포',
+        data: {{ result['analysis']['elements'].values()|list }},
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1
+      }]
+    };
+    new Chart(ctx, { type: 'bar', data: data, options: { scales: { y: { beginAtZero: true } } } });
+  </script>
+  {% endif %}
+
+  <a href="/records" class="d-block mt-4">저장된 목록 보기</a>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
