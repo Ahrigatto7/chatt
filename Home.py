@@ -12,8 +12,8 @@ if uploaded_file:
     # 1. 텍스트 추출
     text = file_handler.extract_text(uploaded_file)
 
-    # 2. 키워드 기반 혼인 문단 추출
-    st.subheader("🔍 혼인 관련 키워드 분석")
+    # 2. 키워드 기반 문단 추출
+    st.subheader("🔍 관련 키워드 분석")
     extracted, keywords = keyword_analyzer.extract_sections(text)
     summary_df, keyword_map = keyword_analyzer.analyze_keywords(extracted, keywords)
 
@@ -22,8 +22,8 @@ if uploaded_file:
     else:
         st.warning("키워드와 관련된 문장이 발견되지 않았습니다.")
 
-    # 3. 사주 해석 규칙 추출
-    st.subheader("📑 사주 해석 규칙 추출")
+    # 3. 해석 규칙 추출
+    st.subheader("📑 해석 규칙 추출")
     rules = rule_extractor.extract_interpretive_rules(text)
 
     if rules:
