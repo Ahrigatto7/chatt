@@ -1,15 +1,10 @@
-def auto_summarize_text(text, ratio=0.2):
-    from gensim.summarization import summarize
-    try:
-        result = summarize(text, ratio=ratio)
-        if not result:
-            result = text[:max(100, int(len(text)*ratio))]
-    except Exception as e:
-        result = f"요약 실패: {e}"
-    return result
+from typing import List, Optional
 
 def ai_classify_paragraphs(paragraphs, api_key, categories=None):
-    import openai  # 함수 내부에서만 import
+    try:
+        import openai
+    except ImportError:
+        return ["(OpenAI 모듈 미설치, 분류 실행 불가)"] * len(paragraphs)
     openai.api_key = api_key
     results = []
     for para in paragraphs:
@@ -31,18 +26,11 @@ def ai_classify_paragraphs(paragraphs, api_key, categories=None):
         results.append(result)
     return results
 
-def ai_summarize_text(
-    text: str,
-    api_key: str,
-    max_words: int = 100
-) -> str:
-    """
-    텍스트를 지정한 길이로 요약 (OpenAI)
-    :param text: 요약할 텍스트
-    :param api_key: OpenAI API KEY
-    :param max_words: 요약 단어 수 제한
-    :return: 요약 결과(str)
-    """
+def ai_summarize_text(text, api_key, max_words=100):
+    try:
+        import openai
+    except ImportError:
+        return "요약 실패: openai 모듈 미설치"
     openai.api_key = api_key
     prompt = f"아래 내용을 {max_words}단어 이내로 한국어로 요약하세요.\n\n{text}"
     try:
@@ -53,6 +41,19 @@ def ai_summarize_text(
             temperature=0
         )
         result = response['choices'][0]['message']['content'].strip()
+    except Exception as e:
+        result = f"요약 실패: {e}"
+    return result
+
+def auto_summarize_text(text, ratio=0.2):
+    """
+    Gensim 기반 텍스트 요약 (OpenAI 필요 없음)
+    """
+    try:
+        from gensim.summarization import summarize
+        result = summarize(text, ratio=ratio)
+        if not result:
+            result = text[:max(100, int(len(text)*ratio))]
     except Exception as e:
         result = f"요약 실패: {e}"
     return result
