@@ -3,3 +3,6 @@ pandas
 openpyxl
 python-docx
 xlsxwriter
+openai
+gensim
+PyPDF2
