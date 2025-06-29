@@ -1,18 +1,15 @@
-import openai
-from typing import List, Optional
+def auto_summarize_text(text, ratio=0.2):
+    from gensim.summarization import summarize
+    try:
+        result = summarize(text, ratio=ratio)
+        if not result:
+            result = text[:max(100, int(len(text)*ratio))]
+    except Exception as e:
+        result = f"요약 실패: {e}"
+    return result
 
-def ai_classify_paragraphs(
-    paragraphs: List[str],
-    api_key: str,
-    categories: Optional[List[str]] = None
-) -> List[str]:
-    """
-    여러 문단(혹은 문장)을 OpenAI로 자동 분류
-    :param paragraphs: 분류 대상 문단 리스트
-    :param api_key: OpenAI API KEY
-    :param categories: 카테고리 리스트(없으면 AI가 자유 분류)
-    :return: 각 문단별 분류 결과 리스트
-    """
+def ai_classify_paragraphs(paragraphs, api_key, categories=None):
+    import openai  # 함수 내부에서만 import
     openai.api_key = api_key
     results = []
     for para in paragraphs:
